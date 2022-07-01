@@ -1,3 +1,7 @@
+"""
+REST API server implemented by Flask
+"""
+
 from flask import Flask, request
 from db_connector import *
 

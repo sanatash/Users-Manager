@@ -1,3 +1,7 @@
+"""
+Module which performs testing of Web interface (web_api module)
+"""
+
 import time
 import pymysql
 from selenium import webdriver

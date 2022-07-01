@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module db_connector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>db_connector</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:d%3A%5Canat%5Cpycharmprojects%5Cdevopsexperts%5Cassignments%5Cusers-manager%5Cdb_connector.py">d:\anat\pycharmprojects\devopsexperts\assignments\users-manager\db_connector.py</a></font></td></tr></table>
+    <p><tt>Database&nbsp;module&nbsp;which&nbsp;connect&nbsp;to&nbsp;MySQL&nbsp;database&nbsp;and&nbsp;performs&nbsp;various&nbsp;SQL&nbsp;operations</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="pymysql.html">pymysql</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-db_change_user_name"><strong>db_change_user_name</strong></a>(id, name)</dt><dd><tt>Changes&nbsp;user&nbsp;name&nbsp;accordingly&nbsp;to&nbsp;user&nbsp;id&nbsp;in&nbsp;database<br>
+:param&nbsp;id:&nbsp;user_id<br>
+:type&nbsp;id:&nbsp;int<br>
+:param&nbsp;name:&nbsp;user_name<br>
+:type&nbsp;name:&nbsp;string</tt></dd></dl>
+ <dl><dt><a name="-db_connect_close"><strong>db_connect_close</strong></a>(conn, cursor)</dt><dd><tt>Closes&nbsp;connection&nbsp;to&nbsp;the&nbsp;database&nbsp;and&nbsp;cursor&nbsp;object<br>
+:param&nbsp;conn:&nbsp;connection&nbsp;to&nbsp;database<br>
+:type&nbsp;conn:&nbsp;Connector&nbsp;class<br>
+:param&nbsp;cursor:&nbsp;cursor&nbsp;to&nbsp;the&nbsp;database<br>
+:type&nbsp;cursor:&nbsp;Cursor&nbsp;class</tt></dd></dl>
+ <dl><dt><a name="-db_connect_open"><strong>db_connect_open</strong></a>()</dt><dd><tt>Opens&nbsp;connection&nbsp;to&nbsp;the&nbsp;MySql&nbsp;database<br>
+:return:&nbsp;connection&nbsp;object<br>
+:rtype:&nbsp;Connector&nbsp;class</tt></dd></dl>
+ <dl><dt><a name="-db_delete_user"><strong>db_delete_user</strong></a>(id)</dt><dd><tt>Delete&nbsp;user&nbsp;with&nbsp;specified&nbsp;id&nbsp;from&nbsp;the&nbsp;database<br>
+:param&nbsp;id:&nbsp;user_id<br>
+:type&nbsp;id:&nbsp;int</tt></dd></dl>
+ <dl><dt><a name="-db_get_user_name"><strong>db_get_user_name</strong></a>(id)</dt><dd><tt>Returns&nbsp;the&nbsp;user&nbsp;name&nbsp;stored&nbsp;in&nbsp;the&nbsp;database&nbsp;for&nbsp;a&nbsp;given&nbsp;user&nbsp;id.<br>
+:param&nbsp;id:&nbsp;user_id<br>
+:type&nbsp;id:&nbsp;int</tt></dd></dl>
+ <dl><dt><a name="-db_insert_user"><strong>db_insert_user</strong></a>(id, name)</dt><dd><tt>Inserts&nbsp;user&nbsp;into&nbsp;users&nbsp;table<br>
+:param&nbsp;id:&nbsp;&nbsp;user_id&nbsp;field<br>
+:type&nbsp;id:&nbsp;int<br>
+:param&nbsp;name:&nbsp;user_name&nbsp;field<br>
+:type&nbsp;name:&nbsp;string</tt></dd></dl>
+</td></tr></table>
+</body></html>
