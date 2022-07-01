@@ -4,6 +4,7 @@ Database module which connect to MySQL database and performs various SQL operati
 
 from datetime import datetime
 import pymysql
+import mysql.connector
 
 def db_connect_open():
     """
@@ -13,9 +14,8 @@ def db_connect_open():
     """
     try:
         # Establishing a connection to DB
-        conn = pymysql.connect(host='remotemysql.com', port=3306, user='JLHNSONLhK', passwd='HE6DJPd5an',
-                               db='JLHNSONLhK')
-        conn.autocommit(True)
+        conn = mysql.connector.connect(host= 'remotemysql.com', port=3307, user='JLHNSONLhK',
+                                       passwd='HE6DJPd5an' , database='JLHNSONLhK')
         return conn
 
     except pymysql.err.Error as e:
@@ -44,16 +44,22 @@ def db_insert_user(id, name):
     """
     # connect to database
     conn = db_connect_open()
-    cursor = conn.cursor()
+    cursor = conn.cursor(prepared=True)
 
     try:
         # Current date time in local system
         creation_date = datetime.now().replace(microsecond=0)
-        # Inserting data into table
-        cursor.execute(
-            f"INSERT into JLHNSONLhK.users (user_id, user_name, creation_date) VALUES ({id}, '{name}', '{creation_date}')")
+        # Parameterized query
+        sql_insert_query = """INSERT into JLHNSONLhK.users (user_id, user_name, creation_date)
+                            VALUES (%s, %s, %s)"""
+        # tuple to insert at placeholder
+        tuple = (id, name, creation_date)
+        cursor.execute(sql_insert_query, tuple)
+        conn.commit()
+
     except pymysql.err.Error as e:
         raise e
+
     finally:
         db_connect_close(conn, cursor)
 
@@ -98,6 +104,7 @@ def db_change_user_name(id, name):
         if row is None:
             raise ValueError("No such Id")
         cursor.execute(f"UPDATE JLHNSONLhK.users SET user_name='{name}' WHERE user_id={id}")
+        conn.commit()
 
     except pymysql.err.Error as e:
         raise e
@@ -118,7 +125,7 @@ def db_delete_user(id):
         if row is None:
             raise ValueError("No such Id")
         cursor.execute(f"DELETE from JLHNSONLhK.users WHERE user_id={id}")
+        conn.commit()
 
     except pymysql.err.Error as e:
         raise e
-

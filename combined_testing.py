@@ -19,6 +19,6 @@ def combined_testing_suite(user_id, user_name):
     except:
         raise Exception("test failed")
 
-user_id = 15
-user_name = "Dorian"
+user_id = 22
+user_name = "Robert"
 combined_testing_suite(user_id, user_name)
