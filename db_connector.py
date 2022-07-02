@@ -7,6 +7,7 @@ import pymysql
 import mysql.connector
 
 users_table_name = "users2"
+config_table_name = "config3"
 
 def db_connect_open():
     """
@@ -76,7 +77,6 @@ def db_get_user_name(id):
     conn = db_connect_open()
     cursor = conn.cursor()
     try:
-        # Inserting data into table
         cursor.execute(f"SELECT user_name from JLHNSONLhK.{users_table_name} WHERE user_id = {id}")
         row = cursor.fetchone()
         if row is None:
@@ -132,4 +132,45 @@ def db_delete_user(id):
     except pymysql.err.Error as e:
         raise e
 
-db_insert_user(5, "Yossef")
+def db_get_max_user_id():
+    """
+    Returns maximum user_id found in users table
+    :return: maximum user_id
+    :rtype: int
+    """
+    # connect to database
+    conn = db_connect_open()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"SELECT max(user_id) from {users_table_name}")
+        row = cursor.fetchone()
+        if row is None:
+            raise ValueError("Fail in getting max user id")
+        if row[0] == None:
+            return 0
+        return row[0]
+    except pymysql.err.Error as e:
+        raise e
+
+    finally:
+        db_connect_close(conn, cursor)
+
+def db_get_all_tests_config():
+    """
+    Connect to config table and brings all rows. These are all tests that should be performed by application.
+    Each test will have different browser and user_name that should be inserted
+    :return: list of all tests that should be performed
+    :rtype: list of tuples
+    """
+    # connect to database
+    conn = db_connect_open()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"SELECT * from JLHNSONLhK.{config_table_name}")
+        all_tests = cursor.fetchall()
+        return all_tests
+    except pymysql.err.Error as e:
+        raise e
+
+    finally:
+        db_connect_close(conn, cursor)

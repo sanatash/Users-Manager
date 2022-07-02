@@ -27,7 +27,6 @@ def add_user_api(user_id):
 
     except pymysql.err.Error as e:
         if str(e).find("Duplicate entry"):
-            print(e)
             return {'status': 'error', 'reason': 'id already exist'}, 500
         else:
             return {'status': 'error', 'reason': {str(e)}}, 500

@@ -42,6 +42,13 @@
  <dl><dt><a name="-db_delete_user"><strong>db_delete_user</strong></a>(id)</dt><dd><tt>Delete&nbsp;user&nbsp;with&nbsp;specified&nbsp;id&nbsp;from&nbsp;the&nbsp;database<br>
 :param&nbsp;id:&nbsp;user_id<br>
 :type&nbsp;id:&nbsp;int</tt></dd></dl>
+ <dl><dt><a name="-db_get_all_tests_config"><strong>db_get_all_tests_config</strong></a>()</dt><dd><tt>Connect&nbsp;to&nbsp;config&nbsp;table&nbsp;and&nbsp;brings&nbsp;all&nbsp;rows.&nbsp;These&nbsp;are&nbsp;all&nbsp;tests&nbsp;that&nbsp;should&nbsp;be&nbsp;performed&nbsp;by&nbsp;application.<br>
+Each&nbsp;test&nbsp;will&nbsp;have&nbsp;different&nbsp;browser&nbsp;and&nbsp;user_name&nbsp;that&nbsp;should&nbsp;be&nbsp;inserted<br>
+:return:&nbsp;list&nbsp;of&nbsp;all&nbsp;tests&nbsp;that&nbsp;should&nbsp;be&nbsp;performed<br>
+:rtype:&nbsp;list&nbsp;of&nbsp;tuples</tt></dd></dl>
+ <dl><dt><a name="-db_get_max_user_id"><strong>db_get_max_user_id</strong></a>()</dt><dd><tt>Returns&nbsp;maximum&nbsp;user_id&nbsp;found&nbsp;in&nbsp;users&nbsp;table<br>
+:return:&nbsp;maximum&nbsp;user_id<br>
+:rtype:&nbsp;int</tt></dd></dl>
  <dl><dt><a name="-db_get_user_name"><strong>db_get_user_name</strong></a>(id)</dt><dd><tt>Returns&nbsp;the&nbsp;user&nbsp;name&nbsp;stored&nbsp;in&nbsp;the&nbsp;database&nbsp;for&nbsp;a&nbsp;given&nbsp;user&nbsp;id.<br>
 :param&nbsp;id:&nbsp;user_id<br>
 :type&nbsp;id:&nbsp;int</tt></dd></dl>
@@ -50,5 +57,13 @@
 :type&nbsp;id:&nbsp;int<br>
 :param&nbsp;name:&nbsp;user_name&nbsp;field<br>
 :type&nbsp;name:&nbsp;string</tt></dd></dl>
-</td></tr></table>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>config_table_name</strong> = 'config3'<br>
+<strong>users_table_name</strong> = 'users2'</td></tr></table>
 </body></html>

@@ -27,11 +27,15 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-web_test"><strong>web_test</strong></a>(user_id, user_name)</dt><dd><tt>Testing&nbsp;the&nbsp;web_app&nbsp;RestApi&nbsp;server&nbsp;by&nbsp;Selenium:<br>
+<td width="100%"><dl><dt><a name="-web_test"><strong>web_test</strong></a>(user_id, user_name, api_gateway_url, browser_name)</dt><dd><tt>Testing&nbsp;the&nbsp;web_app&nbsp;RestApi&nbsp;server&nbsp;by&nbsp;Selenium:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;checks&nbsp;that&nbsp;user_id&nbsp;exist&nbsp;and&nbsp;it's&nbsp;name&nbsp;is&nbsp;correct<br>
 :param&nbsp;user_id:&nbsp;user_id&nbsp;to&nbsp;check<br>
 :type&nbsp;user_id:&nbsp;int<br>
-:param&nbsp;user_name:&nbsp;the&nbsp;correct&nbsp;user_name<br>
-:type&nbsp;user_name:&nbsp;string</tt></dd></dl>
+:param&nbsp;user_name:&nbsp;the&nbsp;correct&nbsp;user_name&nbsp;for&nbsp;given&nbsp;user_id<br>
+:type&nbsp;user_name:&nbsp;string<br>
+:param&nbsp;api_gateway_url:&nbsp;api_gateway_url&nbsp;where&nbsp;web&nbsp;frontend&nbsp;server&nbsp;is&nbsp;running<br>
+:type&nbsp;api_gateway_url:&nbsp;url&nbsp;string<br>
+:param&nbsp;browser_name:&nbsp;the&nbsp;browser&nbsp;where&nbsp;api_gateway_url&nbsp;should&nbsp;be&nbsp;opened<br>
+:type&nbsp;browser_name:&nbsp;string</tt></dd></dl>
 </td></tr></table>
 </body></html>

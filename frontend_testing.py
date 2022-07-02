@@ -7,19 +7,28 @@ import pymysql
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-def web_test(user_id, user_name):
+def web_test(user_id, user_name, api_gateway_url, browser_name):
     """
     Testing the web_app RestApi server by Selenium:
         - checks that user_id exist and it's name is correct
     :param user_id: user_id to check
     :type user_id: int
-    :param user_name: the correct user_name
+    :param user_name: the correct user_name for given user_id
     :type user_name: string
+    :param api_gateway_url: api_gateway_url where web frontend server is running
+    :type api_gateway_url: url string
+    :param browser_name: the browser where api_gateway_url should be opened
+    :type browser_name: string
     """
     try:
-        driver = webdriver.Chrome(executable_path="D:/Anat/chromedriver_win32/ChromeDriver.exe")
+        if browser_name.lower() == "chrome":
+            driver = webdriver.Chrome(executable_path="D:/Anat/chromedriver_win32/ChromeDriver.exe")
+        elif browser_name.lower() == "firefox":
+            driver = webdriver.Firefox(executable_path="D:/Anat/firefoxdriver_win64/geckodriver.exe")
+        else:
+            driver = webdriver.Chrome(executable_path="D:/Anat/chromedriver_win32/ChromeDriver.exe")
 
-        driver.get(f"http://127.0.0.1:5001//users/get_user_data/{user_id}")
+        driver.get(f"{api_gateway_url}/{user_id}")
         time.sleep(2)
 
         user_element = driver.find_element(by=By.ID, value="user")
