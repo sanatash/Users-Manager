@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module rest_api</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>rest_api</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:d%3A%5Canat%5Cpycharmprojects%5Cdevopsexperts%5Cassignments%5Cusers-manager%5Crest_api.py">d:\anat\pycharmprojects\devopsexperts\assignments\users-manager\rest_api.py</a></font></td></tr></table>
+    <p><tt>REST&nbsp;API&nbsp;server&nbsp;implemented&nbsp;by&nbsp;Flask</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="pymysql.html">pymysql</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-add_user_api"><strong>add_user_api</strong></a>(user_id)</dt><dd><tt>Takes&nbsp;care&nbsp;of&nbsp;PUT&nbsp;RestApi&nbsp;method&nbsp;that&nbsp;adds&nbsp;new&nbsp;user&nbsp;to&nbsp;the&nbsp;database&nbsp;with&nbsp;next&nbsp;info:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;user_id&nbsp;is&nbsp;argument&nbsp;to&nbsp;the&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;user_name&nbsp;is&nbsp;found&nbsp;in&nbsp;JSON&nbsp;payload&nbsp;of&nbsp;Rest&nbsp;API&nbsp;request<br>
+:param&nbsp;user_id:&nbsp;user_id&nbsp;to&nbsp;add<br>
+:type&nbsp;user_id:&nbsp;int<br>
+:return:&nbsp;-&nbsp;success&nbsp;if&nbsp;user&nbsp;addition&nbsp;succeed&nbsp;+&nbsp;code&nbsp;200&nbsp;(success)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;reason&nbsp;'id&nbsp;already&nbsp;exist'&nbsp;if&nbsp;such&nbsp;user&nbsp;id&nbsp;is&nbsp;already&nbsp;exist&nbsp;in&nbsp;the&nbsp;database&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;other&nbsp;reason&nbsp;if&nbsp;failure&nbsp;user&nbsp;addition&nbsp;caused&nbsp;by&nbsp;other&nbsp;error&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+:rtype:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;return&nbsp;code</tt></dd></dl>
+ <dl><dt><a name="-change_user_name_api"><strong>change_user_name_api</strong></a>(user_id, user_name)</dt><dd><tt>Takes&nbsp;care&nbsp;of&nbsp;PUT&nbsp;RestApi&nbsp;method&nbsp;that&nbsp;changes&nbsp;the&nbsp;name&nbsp;of&nbsp;user&nbsp;found&nbsp;in&nbsp;database<br>
+:param&nbsp;user_id:&nbsp;user_id&nbsp;to&nbsp;change&nbsp;its&nbsp;user_name<br>
+:type&nbsp;user_id:&nbsp;int<br>
+:param&nbsp;user_name:&nbsp;new&nbsp;user_name&nbsp;that&nbsp;should&nbsp;replace&nbsp;old&nbsp;user_name<br>
+:type&nbsp;user_name:&nbsp;string<br>
+:return:&nbsp;-&nbsp;success&nbsp;if&nbsp;change&nbsp;of&nbsp;user&nbsp;name&nbsp;succeed&nbsp;+&nbsp;code&nbsp;200&nbsp;(success)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;reason&nbsp;'no&nbsp;such&nbsp;id'&nbsp;if&nbsp;user&nbsp;id&nbsp;is&nbsp;not&nbsp;found&nbsp;in&nbsp;the&nbsp;database&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;other&nbsp;reason&nbsp;if&nbsp;failure&nbsp;of&nbsp;change&nbsp;of&nbsp;user&nbsp;name&nbsp;caused&nbsp;by&nbsp;other&nbsp;error&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+:rtype:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;return&nbsp;code</tt></dd></dl>
+ <dl><dt><a name="-delete_user_api"><strong>delete_user_api</strong></a>(user_id)</dt><dd><tt>Takes&nbsp;care&nbsp;of&nbsp;DELETE&nbsp;RestApi&nbsp;method&nbsp;and&nbsp;deleted&nbsp;user&nbsp;from&nbsp;database<br>
+:param&nbsp;user_id:&nbsp;user_id&nbsp;of&nbsp;user&nbsp;to&nbsp;delete<br>
+:type&nbsp;user_id:&nbsp;int<br>
+:return:&nbsp;-&nbsp;success&nbsp;if&nbsp;deletion&nbsp;of&nbsp;user&nbsp;from&nbsp;the&nbsp;database&nbsp;succeed&nbsp;+&nbsp;code&nbsp;200&nbsp;(success)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;reason&nbsp;'no&nbsp;such&nbsp;id'&nbsp;if&nbsp;user&nbsp;id&nbsp;is&nbsp;not&nbsp;found&nbsp;in&nbsp;the&nbsp;database&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;other&nbsp;reason&nbsp;if&nbsp;failure&nbsp;of&nbsp;user&nbsp;deletion&nbsp;caused&nbsp;by&nbsp;other&nbsp;error&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+:rtype:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;return&nbsp;code</tt></dd></dl>
+ <dl><dt><a name="-get_user_name_api"><strong>get_user_name_api</strong></a>(user_id)</dt><dd><tt>Takes&nbsp;care&nbsp;of&nbsp;GET&nbsp;RestApi&nbsp;method&nbsp;that&nbsp;returns&nbsp;the&nbsp;name&nbsp;of&nbsp;user&nbsp;found&nbsp;in&nbsp;database<br>
+:param&nbsp;user_id:&nbsp;user_id&nbsp;whose&nbsp;name&nbsp;to&nbsp;return<br>
+:type&nbsp;user_id:&nbsp;int<br>
+:return:&nbsp;-&nbsp;success&nbsp;if&nbsp;get&nbsp;of&nbsp;user&nbsp;name&nbsp;succeed&nbsp;+&nbsp;code&nbsp;200&nbsp;(success)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;reason&nbsp;'no&nbsp;such&nbsp;id'&nbsp;if&nbsp;user&nbsp;id&nbsp;is&nbsp;not&nbsp;found&nbsp;in&nbsp;the&nbsp;database&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;error&nbsp;with&nbsp;other&nbsp;reason&nbsp;if&nbsp;failure&nbsp;of&nbsp;get&nbsp;of&nbsp;user&nbsp;name&nbsp;caused&nbsp;by&nbsp;other&nbsp;error&nbsp;+&nbsp;code&nbsp;500&nbsp;(fail)<br>
+:rtype:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;return&nbsp;code</tt></dd></dl>
+ <dl><dt><a name="-users_rest_api"><strong>users_rest_api</strong></a>(user_id)</dt><dd><tt>RestApi&nbsp;Backend&nbsp;server&nbsp;which&nbsp;implements&nbsp;Get/POST/PUT/DELETE&nbsp;methods<br>
+:param&nbsp;user_id:&nbsp;user_id&nbsp;variable&nbsp;placeholder&nbsp;in&nbsp;url<br>
+:type&nbsp;user_id:&nbsp;int<br>
+:return:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;return&nbsp;code<br>
+:rtype:&nbsp;JSON&nbsp;file&nbsp;+&nbsp;int</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>app</strong> = &lt;Flask 'rest_api'&gt;<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
+</body></html>

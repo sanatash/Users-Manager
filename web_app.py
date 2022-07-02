@@ -1,7 +1,9 @@
+"""
+Web interface server implemented by Flask
+"""
+
 from flask import Flask, request
 from db_connector import *
-import mysql.connector
-from mysql.connector import errorcode, errors
 
 app = Flask(__name__)
 

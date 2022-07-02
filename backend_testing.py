@@ -1,7 +1,9 @@
+"""
+Module which performs testing of backend side (rest_api module)
+"""
+
 import requests
 from db_connector import db_get_user_name
-import pymysql
-
 
 def backend_server_test(user_id, user_name):
     """
