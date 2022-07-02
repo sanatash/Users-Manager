@@ -6,6 +6,8 @@ from datetime import datetime
 import pymysql
 import mysql.connector
 
+users_table_name = "users2"
+
 def db_connect_open():
     """
     Opens connection to the MySql database
@@ -14,7 +16,7 @@ def db_connect_open():
     """
     try:
         # Establishing a connection to DB
-        conn = mysql.connector.connect(host= 'remotemysql.com', port=3307, user='JLHNSONLhK',
+        conn = mysql.connector.connect(host= 'remotemysql.com', port=3306, user='JLHNSONLhK',
                                        passwd='HE6DJPd5an' , database='JLHNSONLhK')
         return conn
 
@@ -48,12 +50,12 @@ def db_insert_user(id, name):
 
     try:
         # Current date time in local system
-        creation_date = datetime.now().replace(microsecond=0)
+        # creation_date = datetime.now().replace(microsecond=0)
         # Parameterized query
-        sql_insert_query = """INSERT into JLHNSONLhK.users (user_id, user_name, creation_date)
-                            VALUES (%s, %s, %s)"""
+        sql_insert_query = f"""INSERT into JLHNSONLhK.{users_table_name} (user_id, user_name)
+                            VALUES (%s, %s)"""
         # tuple to insert at placeholder
-        tuple = (id, name, creation_date)
+        tuple = (id, name)
         cursor.execute(sql_insert_query, tuple)
         conn.commit()
 
@@ -75,7 +77,7 @@ def db_get_user_name(id):
     cursor = conn.cursor()
     try:
         # Inserting data into table
-        cursor.execute(f"SELECT user_name from JLHNSONLhK.users WHERE user_id = {id}")
+        cursor.execute(f"SELECT user_name from JLHNSONLhK.{users_table_name} WHERE user_id = {id}")
         row = cursor.fetchone()
         if row is None:
             raise ValueError("No such Id")
@@ -99,11 +101,11 @@ def db_change_user_name(id, name):
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"SELECT * from JLHNSONLhK.users WHERE user_id={id}")
+        cursor.execute(f"SELECT * from JLHNSONLhK.{users_table_name} WHERE user_id={id}")
         row = cursor.fetchone()
         if row is None:
             raise ValueError("No such Id")
-        cursor.execute(f"UPDATE JLHNSONLhK.users SET user_name='{name}' WHERE user_id={id}")
+        cursor.execute(f"UPDATE JLHNSONLhK.{users_table_name} SET user_name='{name}' WHERE user_id={id}")
         conn.commit()
 
     except pymysql.err.Error as e:
@@ -120,12 +122,14 @@ def db_delete_user(id):
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"SELECT * from JLHNSONLhK.users WHERE user_id={id}")
+        cursor.execute(f"SELECT * from JLHNSONLhK.{users_table_name} WHERE user_id={id}")
         row = cursor.fetchone()
         if row is None:
             raise ValueError("No such Id")
-        cursor.execute(f"DELETE from JLHNSONLhK.users WHERE user_id={id}")
+        cursor.execute(f"DELETE from JLHNSONLhK.{users_table_name} WHERE user_id={id}")
         conn.commit()
 
     except pymysql.err.Error as e:
         raise e
+
+db_insert_user(5, "Yossef")
