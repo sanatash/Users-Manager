@@ -2,6 +2,8 @@
 REST API server implemented by Flask
 """
 
+import os
+import signal
 from flask import Flask, request
 from db_connector import *
 
@@ -106,5 +108,19 @@ def users_rest_api(user_id):
         return change_user_name_api(user_id)
     elif request.method == 'DELETE':
         return delete_user_api(user_id)
+
+@app.route('/stop_server')
+def stop_server():
+    """
+    Function that stops this rest_api Server
+    :return:  "Server stopped" in case that this succeed
+            "Didn't succeed to kill the rest_api server" in case that kill function didn't succeed
+    :rtype:  string
+    """
+    try:
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+        return "Server stopped"
+    except:
+        print("Didn't succeed to kill the rest_api server")
 
 app.run(host='127.0.0.1', debug=True, port=5000)
