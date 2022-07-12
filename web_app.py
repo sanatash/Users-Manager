@@ -2,6 +2,8 @@
 Web interface server implemented by Flask
 """
 
+import os
+import signal
 from flask import Flask, request
 from db_connector import *
 
@@ -27,5 +29,18 @@ def web_app_rest_api(user_id):
     except pymysql.err.Error as e:
          return "<H1 id='error'>" + str(e) + "</H1>"
 
+@app.route('/stop_server')
+def stop_server():
+    """
+    Function that stops this RestAPI Web Server
+    :return:  "Server stopped" in case that this succeed
+            "Didn't succeed to kill the web_api server" in case that kill function didn't succeed
+    :rtype:
+    """
+    try:
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+        return "Server stopped"
+    except:
+        print("Didn't succeed to kill the web_api server")
 
 app.run(host='127.0.0.1', debug=True, port=5001)

@@ -17,15 +17,22 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="pymysql.html">pymysql</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="mysql.html">mysql</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="pymysql.html">pymysql</a><br>
+</td><td width="25%" valign=top><a href="signal.html">signal</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-web_app_rest_api"><strong>web_app_rest_api</strong></a>(user_id)</dt><dd><tt>RestApi&nbsp;Frontend&nbsp;web&nbsp;server&nbsp;which&nbsp;implements&nbsp;Get&nbsp;method<br>
+<td width="100%"><dl><dt><a name="-stop_server"><strong>stop_server</strong></a>()</dt><dd><tt>Function&nbsp;that&nbsp;stops&nbsp;this&nbsp;RestAPI&nbsp;Web&nbsp;Server<br>
+:return:&nbsp;&nbsp;"Server&nbsp;stopped"&nbsp;in&nbsp;case&nbsp;that&nbsp;this&nbsp;succeed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Didn't&nbsp;succeed&nbsp;to&nbsp;kill&nbsp;the&nbsp;web_api&nbsp;server"&nbsp;in&nbsp;case&nbsp;that&nbsp;kill&nbsp;function&nbsp;didn't&nbsp;succeed<br>
+:rtype:</tt></dd></dl>
+ <dl><dt><a name="-web_app_rest_api"><strong>web_app_rest_api</strong></a>(user_id)</dt><dd><tt>RestApi&nbsp;Frontend&nbsp;web&nbsp;server&nbsp;which&nbsp;implements&nbsp;Get&nbsp;method<br>
 :param&nbsp;user_id:&nbsp;user_id&nbsp;variable&nbsp;placeholder&nbsp;in&nbsp;url<br>
 :type&nbsp;user_id:&nbsp;int<br>
 :return:&nbsp;HTML&nbsp;formatted&nbsp;string<br>
@@ -41,5 +48,7 @@
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><strong>app</strong> = &lt;Flask 'web_app'&gt;<br>
-<strong>request</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
+<strong>config_table_name</strong> = 'config3'<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;<br>
+<strong>users_table_name</strong> = 'users2'</td></tr></table>
 </body></html>
