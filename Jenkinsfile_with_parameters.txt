@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder( logRotator( numToKeepStr: "20", daysToKeepStr: "5") )
+    }
+//	parameters {
+//		choice(name: "TEST_CHOICE", choices: ["combined_test", "frontend_test", "backend_test"], description: "Choose which test to run")
+//	}
+	
+
+    stages {
+		stage('Setup parameters') {
+            steps {
+                script { 
+                    properties([
+                        parameters([
+                            choice(
+                                choices: ['combined_test', 'frontend_test', 'backend_test'], 
+                                name: 'TEST_CHOICE',
+								description: 'Choose which test to run'
+                            )
+                        ])
+                    ])
+                }
+            }
+        }
+		
+        stage('checkout') {
+            steps {
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+            }
+        }
+		stage('Install python packages') {
+			steps {
+				bat 'copy D:\\Anat\\python_install_files\\install_requirements.txt .'
+				bat 'pip install -r install_requirements.txt'
+			}
+		}
+
+        stage('Run rest_api.py (backend)') {
+            steps {
+				bat 'start /min python rest_api.py'
+            }
+        }
+		
+		stage('Run web_app.py (frontend)') {
+            steps {
+				bat 'start /min python web_app.py'
+            }
+        }
+		
+		stage('Run test accordingly to TEST_CHOISE parameter') {
+			steps {
+				script {
+					try {
+						if (params.TEST_CHOICE == 'frontend_test') {
+							bat 'python frontend_testing.py' }
+						else if (params.TEST_CHOICE == 'backend_test') {
+							bat 'python backend_testing.py' }
+						else {
+							bat 'python combined_testing.py' }
+					} 
+					catch (Exception e)  {
+						currentBuild.result = "FAILED"
+						notifyFailed()
+						throw e
+					}
+				}
+			}
+		}
+		
+    }
+}
+
+def notifyFailed() {
+
+  emailext (
+      subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+	  to: '*******@gmail.com'
+    )
+	
+}

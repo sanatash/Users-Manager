@@ -26,3 +26,9 @@ def combined_testing_suite():
             frontend_testing.web_test(max_user_id+1, user_name_to_insert, api_gateway_url, browser_name)
     except:
         raise Exception("test failed")
+
+if __name__ == '__main__':
+    try:
+        combined_testing_suite()
+    except:
+        raise Exception("combined test failed")
