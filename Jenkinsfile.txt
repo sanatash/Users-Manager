@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder( logRotator( numToKeepStr: "20", daysToKeepStr: "5") )
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                script {
+                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
+                }
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+            }
+        }
+		stage('Install python packages') {
+			steps {
+				bat 'copy D:\\Anat\\python_install_files\\install_requirements.txt .'
+				bat 'pip install -r install_requirements.txt'
+			}
+		}
+        stage('Run rest_api.py (backend)') {
+            steps {
+				bat 'start /min python rest_api.py'
+            }
+        }
+		
+		stage('Run web_app.py (frontend)') {
+            steps {
+				bat 'start /min python web_app.py'
+            }
+        }
+		
+		stage('Run the Users_Manager application') {
+			steps {
+				script {
+					try {
+						bat 'python main.py'
+					} 
+					catch (Exception e)  {
+						currentBuild.result = "FAILED"
+						notifyFailed()
+						throw e
+					}
+				}
+			}
+		}
+		
+    }
+}
+
+def notifyFailed() {
+
+  emailext (
+      subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+	  to: '*******@gmail.com'
+    )
+	
+}
