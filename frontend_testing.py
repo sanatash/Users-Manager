@@ -6,6 +6,7 @@ import time
 import pymysql
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from db_connector import db_get_all_tests_config, db_get_user_name
 
 def web_test(user_id, user_name, api_gateway_url, browser_name):
     """
@@ -45,3 +46,16 @@ def web_test(user_id, user_name, api_gateway_url, browser_name):
         raise Exception(Exception("frontend test failed"))
     except:
         raise Exception(Exception("frontend test failed"))
+
+if __name__ == '__main__':
+    try:
+        all_tests = db_get_all_tests_config()
+
+        for test in all_tests:
+            user_id = test[0]
+            user_name_to_check = db_get_user_name(user_id)
+            api_gateway_url = test[1]
+            browser_name = test[2]
+            web_test(user_id, user_name_to_check, api_gateway_url, browser_name)
+    except:
+        raise Exception("frontend test failed")
