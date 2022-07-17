@@ -1,12 +1,12 @@
 """
 Module which performs testing of Web interface (web_api module)
 """
-
+import sys
 import time
 import pymysql
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from db_connector import db_get_all_tests_config, db_get_user_name
+from db_connector import db_save_credentials, db_get_all_tests_config, db_get_user_name
 
 def web_test(user_id, user_name, api_gateway_url, browser_name):
     """
@@ -49,6 +49,7 @@ def web_test(user_id, user_name, api_gateway_url, browser_name):
 
 if __name__ == '__main__':
     try:
+        db_save_credentials(sys.argv[1], sys.argv[2])
         all_tests = db_get_all_tests_config()
 
         for test in all_tests:

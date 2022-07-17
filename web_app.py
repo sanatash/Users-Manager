@@ -4,6 +4,8 @@ Web interface server implemented by Flask
 
 import os
 import signal
+import sys
+
 from flask import Flask, request
 from db_connector import *
 
@@ -21,7 +23,9 @@ def web_app_rest_api(user_id):
             "other message" error if other type of FAIL occurred
     :rtype: string
     """
+
     try:
+        db_save_credentials(sys.argv[1], sys.argv[2])
         user_name = db_get_user_name(user_id)
         return "<H1 id='user'>" + user_name + "</H1>"
     except ValueError as e:

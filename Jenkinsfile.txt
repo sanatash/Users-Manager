@@ -20,13 +20,17 @@ pipeline {
 		}
         stage('Run rest_api.py (backend)') {
             steps {
-				bat 'start /min python rest_api.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python rest_api.py "$user" "$pass"'
+				}
             }
         }
 		
 		stage('Run web_app.py (frontend)') {
             steps {
-				bat 'start /min python web_app.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python web_app.py "$user" "$pass"'
+				}
             }
         }
 		
@@ -34,7 +38,8 @@ pipeline {
 			steps {
 				script {
 					try {
-						bat 'python main.py'
+					    withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+						    bat 'python main.py "$user" "$pass"' }
 					} 
 					catch (Exception e)  {
 						currentBuild.result = "FAILED"

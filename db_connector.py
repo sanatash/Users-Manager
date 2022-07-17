@@ -9,13 +9,26 @@ import mysql.connector
 # Database connection details
 db_host = 'sql.freedb.tech'
 db_port = 3306
-db_user = 'freedb_user_anat'
-db_passwd = 'RfpG#wf45YrSwWx'
+db_user = ''
+db_passwd = ''
 mysql_database = 'freedb_DevOpsAnatDatabase'
 
 # Tables
 users_table_name = "users"
 config_table_name = "config"
+
+def db_save_credentials(user, password):
+    """
+    Stores database user name and password credentials in module global variables
+    :param user: database user
+    :type user: string
+    :param password: database password
+    :type password:  string
+    """
+    global db_user
+    db_user = user
+    global db_passwd
+    db_passwd = password
 
 def db_connect_open():
     """
