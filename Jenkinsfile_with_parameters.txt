@@ -3,10 +3,6 @@ pipeline {
     options {
         buildDiscarder( logRotator( numToKeepStr: "20", daysToKeepStr: "5") )
     }
-//	parameters {
-//		choice(name: "TEST_CHOICE", choices: ["combined_test", "frontend_test", "backend_test"], description: "Choose which test to run")
-//	}
-	
 
     stages {
 		stage('Setup parameters') {
@@ -39,13 +35,17 @@ pipeline {
 
         stage('Run rest_api.py (backend)') {
             steps {
-				bat 'start /min python rest_api.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python rest_api.py "$user" "$pass"'
+				}
             }
         }
 		
 		stage('Run web_app.py (frontend)') {
             steps {
-				bat 'start /min python web_app.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python web_app.py "$user" "$pass"'
+				}
             }
         }
 		
@@ -54,11 +54,14 @@ pipeline {
 				script {
 					try {
 						if (params.TEST_CHOICE == 'frontend_test') {
-							bat 'python frontend_testing.py' }
+						   withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							    bat 'python frontend_testing.py "$user" "$pass"' }}
 						else if (params.TEST_CHOICE == 'backend_test') {
-							bat 'python backend_testing.py' }
+						    withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							    bat 'python backend_testing.py "$user" "$pass"' }}
 						else {
-							bat 'python combined_testing.py' }
+						    withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							    bat 'python combined_testing.py "$user" "$pass"' }}
 					} 
 					catch (Exception e)  {
 						currentBuild.result = "FAILED"
