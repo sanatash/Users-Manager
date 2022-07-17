@@ -4,6 +4,8 @@ REST API server implemented by Flask
 
 import os
 import signal
+import sys
+
 from flask import Flask, request
 from db_connector import *
 
@@ -108,6 +110,8 @@ def users_rest_api(user_id):
         return change_user_name_api(user_id)
     elif request.method == 'DELETE':
         return delete_user_api(user_id)
+
+    print(f"rest_api_py: database user: {sys.argv[1]}, pass: {sys.argv[2]}")
 
 @app.route('/stop_server')
 def stop_server():

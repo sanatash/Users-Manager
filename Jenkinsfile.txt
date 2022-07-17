@@ -9,7 +9,7 @@ pipeline {
                 script {
                     properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
                 }
-				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+				git branch: 'feature/database_credentials', url: 'https://github.com/sanatash/Users-Manager.git'
             }
         }
 		stage('Install python packages') {
@@ -20,13 +20,17 @@ pipeline {
 		}
         stage('Run rest_api.py (backend)') {
             steps {
-				bat 'start /min python rest_api.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python rest_api.py $user $pass'
+				}
             }
         }
 		
 		stage('Run web_app.py (frontend)') {
             steps {
-				bat 'start /min python web_app.py'
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python web_app.py $user $pass'
+				}
             }
         }
 		
