@@ -23,7 +23,6 @@ def web_app_rest_api(user_id):
             "other message" error if other type of FAIL occurred
     :rtype: string
     """
-    print(f"web_api_py: database user: {sys.argv[1]}, pass: {sys.argv[2]}")
 
     try:
         user_name = db_get_user_name(user_id)
