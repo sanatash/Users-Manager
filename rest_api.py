@@ -24,7 +24,6 @@ def add_user_api(user_id):
     :rtype: JSON file + return code
     """
     try:
-        print(f"rest_api_py: database user: {sys.argv[1]}, pass: {sys.argv[2]}")
         request_data = request.json
         user_name = request_data.get('user_name')
         db_insert_user(user_id, user_name)
@@ -103,6 +102,8 @@ def users_rest_api(user_id):
     :return: JSON file + return code
     :rtype: JSON file + int
     """
+    db_save_credentials(sys.argv[1], sys.argv[2])
+
     if request.method == 'POST':
         return add_user_api(user_id)
     elif request.method == 'GET':

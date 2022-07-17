@@ -25,6 +25,7 @@ def web_app_rest_api(user_id):
     """
 
     try:
+        db_save_credentials(sys.argv[1], sys.argv[2])
         user_name = db_get_user_name(user_id)
         return "<H1 id='user'>" + user_name + "</H1>"
     except ValueError as e:
