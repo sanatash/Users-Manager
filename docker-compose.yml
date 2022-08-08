@@ -1,0 +1,6 @@
+version: "3"
+services:
+  rest_api:
+    image: 2205experts/restapi-image:${IMAGE_TAG}
+    ports:
+      - 5002:5000
