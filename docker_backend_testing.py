@@ -1,5 +1,5 @@
 """
-Module which performs testing of backend side (rest_api module)
+Module which performs testing of backend side running inside the docker (dockerized rest_api module)
 """
 import sys
 
@@ -7,7 +7,7 @@ import requests
 from db_connector import db_get_user_name
 from db_connector import db_save_credentials, db_get_all_tests_config, db_get_max_user_id
 
-def backend_server_test(user_id, user_name):
+def docker_backend_server_test(user_id, user_name):
     """
     Testing the rest_api backend server by posting new user and checking that it's name is correct by GET request and selecting data from the database
     :param user_id: user_id to POST
@@ -16,7 +16,7 @@ def backend_server_test(user_id, user_name):
     :type user_name: string
     """
 
-    url = f"http://127.0.0.1:5000/users/{user_id}"
+    url = f"http://127.0.0.1:5002/users/{user_id}"
     payload = {"user_name": user_name}
 
     # Step 1
@@ -26,14 +26,14 @@ def backend_server_test(user_id, user_name):
 
     if get_response.json()['status'] == 'ok':
         if get_response.json()['user_name'] != user_name or get_response.status_code != 200:
-            raise Exception("backend test failed")
+            raise Exception("docker backend test failed")
     elif get_response.json()['status'] == 'error':
-        raise Exception("backend test failed")
+        raise Exception("docker backend test failed")
 
     # Step 3
     db_name = db_get_user_name(user_id)
     if db_name != user_name:
-        raise Exception("backend test failed")
+        raise Exception("docker backend test failed")
 
 if __name__ == '__main__':
     try:
@@ -44,6 +44,7 @@ if __name__ == '__main__':
             max_user_id = db_get_max_user_id()
 
             user_name_to_insert = test[3]
-            backend_server_test(max_user_id+1, user_name_to_insert)
+            docker_backend_server_test(max_user_id+1, user_name_to_insert)
+
     except:
-        raise Exception("backend test failed")
+        raise Exception("docker backend test failed")

@@ -1,0 +1,124 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder( logRotator( numToKeepStr: "20", daysToKeepStr: "5") )
+    }
+	
+	environment {
+		registry = "2205experts/restapi-image"
+		registryCredential = 'docker_hub'
+		dockerImage = ''
+	}
+	
+    stages {
+        stage('checkout') {
+           steps {
+                script {
+                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
+                }
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+            }
+        }
+		stage('Install python packages') {
+			steps {
+				bat 'pip install -r install_requirements.txt'
+			}
+		}
+		
+        stage('Run rest_api.py (backend)') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python rest_api.py %user% %pass%'
+				}
+            }
+        }
+		
+		stage('Run backend_testing.py (backend testing)') {
+            steps {
+				script {
+					try {
+						withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							bat 'python backend_testing.py %user% %pass%'}
+					}
+					catch (Exception e)  {
+						currentBuild.result = "FAILED"
+						throw e
+					}
+				}
+			}
+        }
+		
+		stage('Run clean_environment.py') {
+            steps {
+				bat 'python clean_environment.py'
+				}
+            }
+		
+		stage('Build Docker image - locally') {
+            steps {
+				script {
+					dockerImage = docker.build registry 
+					}	
+				}
+        }
+		
+		stage('Push Docker image - to HUB') {
+			steps {
+				script {
+						docker.withRegistry('', registryCredential) {
+							dockerImage.push("$BUILD_NUMBER")
+							dockerImage.push('latest')
+					}	
+				}
+			}
+		}
+		
+		stage('set version'){
+			steps{
+				bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
+			}
+		}
+
+		stage('Run docker-compose up') {
+			steps {
+				script {
+					docker.withRegistry('', registryCredential) {
+						step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartService', scale: 1, service: 'rest_api'], useCustomDockerComposeFile: true])
+					}
+				}
+			}
+		}
+		
+		stage('Test dockerized app – using docker_backend_testing.py') {
+			steps {
+				script {
+					try {
+						withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							bat 'python docker_backend_testing.py %user% %pass%' }
+					}
+					catch (Exception e)  {
+						currentBuild.result = "FAILED"
+						throw e
+					}
+				}
+            }
+		}
+		
+		stage('Clean environment - docker compose down') {
+			steps {
+				step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StopService', service: 'rest_api'], useCustomDockerComposeFile: true])
+				bat 'docker image ls'
+			}
+		}
+		
+	}
+	
+	post {
+		always {
+			bat "docker-compose down"
+			bat "docker rmi $registry:$BUILD_NUMBER"
+			bat "docker rmi $registry:latest"
+			bat "docker image ls"
+		}
+	}
+}
