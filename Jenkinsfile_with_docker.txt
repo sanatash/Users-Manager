@@ -115,6 +115,7 @@ pipeline {
 	
 	post {
 		always {
+			bat "docker-compose down"
 			bat "docker rmi $registry:$BUILD_NUMBER"
 			bat "docker rmi $registry:latest"
 			bat "docker image ls"
