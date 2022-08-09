@@ -16,7 +16,7 @@ pipeline {
                 script {
                     properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
                 }
-				git branch: 'develop', url: 'https://github.com/sanatash/Users-Manager.git'
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
             }
         }
 		stage('Install python packages') {
