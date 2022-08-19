@@ -58,6 +58,7 @@ pipeline {
 			
 		stage('Build Docker image - locally') {
             steps {
+				bat 'copy .\\restapi\\Dockerfile .'
 				script {
 					dockerImage = docker.build registry 
 					}	
@@ -105,7 +106,7 @@ pipeline {
 		always {
 			bat "docker rmi $registry:$BUILD_NUMBER"
 			bat "docker rmi $registry:latest"
-			bat "docker rmi $(docker image ls -q)"
+			bat "docker rmi \$(docker image ls -q)"
 		}
 	}
 }
