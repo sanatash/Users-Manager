@@ -1,0 +1,10 @@
+FROM python:3
+WORKDIR /usr/src/app
+COPY rest_api_docker.py ./
+COPY db_docker_connector.py ./
+COPY mysql.env ./
+COPY install_requirements.txt ./
+RUN pip install -r install_requirements.txt
+#RUN chmod 644 rest_api_docker.py
+EXPOSE 5000
+CMD ["python3", "rest_api_docker.py"]

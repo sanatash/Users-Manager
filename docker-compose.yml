@@ -4,3 +4,20 @@ services:
     image: 2205experts/restapi-image:${IMAGE_TAG}
     ports:
       - 5002:5000
+    depends_on:
+      - mysql
+    restart: always
+  mysql:
+    build: ./mysql/
+    env_file:
+      - mysql.env
+    ports:
+      - 3306:3306
+    restart: always
+  docker_test:
+    build:
+      context: .
+      dockerfile: ./docker_test/Dockerfile
+    depends_on:
+      - rest_api
+      - mysql
