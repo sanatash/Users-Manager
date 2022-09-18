@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deploy
+  labels:
+    name: mysql-deploy
+    app: users-manager-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mysql-pod
+      app: users-manager-app
+  template:
+    metadata:
+      name: mysql-pod
+      labels:
+        name: mysql-pod
+        app: users-manager-app
+    spec:
+      containers:
+        - name: mysql
+          image: 2205experts/mysql-image:latest
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: mysql-secret
+            - configMapRef:
+                name: mysql-configmap

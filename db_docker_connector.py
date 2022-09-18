@@ -1,8 +1,6 @@
 """
 Database module which connect to MySQL database and performs various SQL operations
 """
-
-from datetime import datetime
 import pymysql
 import mysql.connector
 from configobj import ConfigObj
