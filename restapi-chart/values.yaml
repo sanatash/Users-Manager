@@ -1,0 +1,14 @@
+# Default values for restapi-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 2205experts/restapi-k8s-image
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+service:
+  type: LoadBalancer
