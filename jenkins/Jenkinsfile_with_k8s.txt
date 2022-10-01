@@ -11,20 +11,20 @@ pipeline {
 	}
 	
     stages {
-//        stage('1. checkout') {
-//           steps {
-//                script {
-//                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
-//                }
-//				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
-//            }
-//        }
+        stage('1. checkout') {
+           steps {
+                script {
+                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
+                }
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+            }
+        }
 
-		stage('1. Copy project files') {
-			steps {
-				bat 'Xcopy D:\\Anat\\PycharmProjects\\DevOpsExperts\\Assignments\\Users-Manager\\ . /s /Y /Q'
-			}
-		}
+//		stage('1. Copy project files') {
+//			steps {
+//				bat 'Xcopy D:\\Anat\\PycharmProjects\\DevOpsExperts\\Assignments\\Users-Manager\\ . /s /Y /Q'
+//			}
+//		}
 		
 		stage('Install python packages') {
 			steps {
