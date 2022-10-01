@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi-deploy
+  labels:
+    name: restapi-deploy
+    app: users-manager-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: restapi-app-pod
+      app: users-manager-app
+  template:
+    metadata:
+      name: restapi-app-pod
+      labels:
+        name: restapi-app-pod
+        app: users-manager-app
+    spec:
+      containers:
+        - name: restapi-app
+          image: 2205experts/restapi-k8s-image:latest
+          ports:
+            - containerPort: 5000

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    name: mysql-pod
+    app: users-manager-app
+spec:
+  containers:
+    - name: mysql
+      image: 2205experts/mysql-image:latest
+      ports:
+        - containerPort: 3306
+      envFrom:
+        - secretRef:
+            name: mysql-secret
+        - configMapRef:
+            name: mysql-configmap
+      volumeMounts:
+        - mountPath: /hp_data
+          name: hostpath-volume
+  volumes:
+    - name: hostpath-volume
+      hostPath:
+        path: D:\mysql_data
+        type: DirectoryOrCreate

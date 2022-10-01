@@ -1,0 +1,161 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder( logRotator( numToKeepStr: "20", daysToKeepStr: "5") )
+    }
+	
+	environment {
+		registry = "2205experts/restapi-image"
+		registryCredential = 'docker_hub'
+		dockerImage = ''
+	}
+	
+    stages {
+        stage('1. checkout') {
+           steps {
+                script {
+                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
+                }
+				git branch: 'main', url: 'https://github.com/sanatash/Users-Manager.git'
+            }
+        }
+
+//		stage('1. Copy project files') {
+//			steps {
+//				bat 'Xcopy D:\\Anat\\PycharmProjects\\DevOpsExperts\\Assignments\\Users-Manager\\ . /s /Y /Q'
+//			}
+//		}
+		
+		stage('Install python packages') {
+			steps {
+				bat 'pip install -r install_requirements.txt'
+			}
+		}
+	
+        stage('2. Run rest_api.py (backend)') {
+            steps {
+               withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+				    bat 'start /min python rest_api.py %user% %pass%'
+				}
+            }
+        }
+		
+		stage('3. Run backend_testing.py (backend testing)') {
+            steps {
+				script {
+					try {
+						withCredentials([usernamePassword(credentialsId: 'DB_CRED', usernameVariable: 'user', passwordVariable: 'pass')]) {
+							bat 'python backend_testing.py %user% %pass%'}
+					}
+					catch (Exception e)  {
+						currentBuild.result = "FAILED"
+						throw e
+					}
+				}
+			}
+       }
+		
+		stage('4. Run clean_environment.py') {
+            steps {
+				bat 'python clean_environment.py'
+				}
+            }
+		
+			
+		stage('5. Build Docker image - locally') {
+            steps {
+				bat 'copy .\\restapi\\Dockerfile .'
+				script {
+					dockerImage = docker.build registry 
+					}	
+				}
+        }
+		
+		stage('6. Push Docker image - to HUB') {
+			steps {
+				script {
+						docker.withRegistry('', registryCredential) {
+							dockerImage.push("$BUILD_NUMBER")
+							dockerImage.push('latest')
+					}	
+				}
+			}
+		}
+		
+		stage('7. set image version'){
+			steps{
+				bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
+			}
+		}
+
+		stage('8. Run docker-compose up with three containers (rest_api, mysql and docker_test)') {
+			steps {
+				script {
+					docker.withRegistry('', registryCredential) {
+ 						step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
+					}
+				}
+			}
+		}
+		
+		
+		stage('9. Clean environment - docker compose down') {
+			steps {
+				step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
+			}
+		}
+		
+		stage('10. Deploy HELM chart ') {
+			steps {
+				bat "helm install restapi-1 .\\restapi-chart"
+			}
+		}
+		
+		stage('11. Create mysql k8s deployment and service') {
+			steps {
+				bat "kubectl create -f .\\k8s\\mysql_deploy.yaml"
+				bat "kubectl create -f .\\k8s\\mysql_service.yaml"
+			}
+		}
+		
+		stage('12. Write your service URL into k8s_url.txt file') {
+			steps {
+				bat "start /min k8s_url.bat"
+			}
+		}
+		
+		stage ("13. Wait prior starting k8s_backend_testing") {
+			steps {
+				bat "echo 'Waiting 5 minutes before k8s_backen_testing starting'"
+				sleep 6 // seconds
+			}
+		}
+		
+		stage('14. Test deployed app – using K8S_backend_testing.py') {
+			steps {
+				bat 'start /min python k8s_backend_testing.py'
+			}
+		}
+		
+		stage('15. Uninstall HELM deployment') {
+			steps {
+				bat "helm uninstall restapi-1"
+			}
+		}
+		
+		stage('16. Delete k8s mysql service and deploy') {
+			steps {
+				bat "kubectl delete service mysql"
+				bat "kubectl delete deploy mysql-deploy"
+			}
+		}
+	}
+	
+	post {
+		always {
+			bat "docker rmi $registry:$BUILD_NUMBER"
+			bat "docker rmi $registry:latest"
+			bat "docker image prune -a -f"
+		}
+	} 
+}
