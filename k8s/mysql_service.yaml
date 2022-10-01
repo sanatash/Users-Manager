@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    name: db-service
+    app: users-manager-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    name: mysql-pod
+    app: users-manager-app
